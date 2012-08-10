@@ -70,5 +70,6 @@ bool i_toggle_antialias(arg_t);
 bool it_toggle_alpha(arg_t);
 bool it_open_with(arg_t);
 bool it_shell_cmd(arg_t);
+bool p_change_palette(arg_t a);
 
 #endif /* COMMANDS_H */

@@ -1,5 +1,5 @@
-/* sxiv: options.h
- * Copyright (c) 2012 Bert Muennich <be.muennich at googlemail.com>
+/* sxiv: palette.h
+ * Copyright (c) 2012 Devon Smith <decasm at gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -16,43 +16,40 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef OPTIONS_H
-#define OPTIONS_H
 
-#include "image.h"
-#include "types.h"
 
-typedef struct {
-	/* file list: */
-	char **filenames;
-	bool from_stdin;
-	bool recursive;
-	int filecnt;
-	int startnum;
+typedef struct palette_s palette_t;
+typedef struct keytagmap_s keytagmap_t;
+typedef struct mapping_s mapping_t;
+typedef struct mapping2_s mapping2_t;
 
-	/* image: */
-	scalemode_t scalemode;
-	float zoom;
-	bool aa;
+palette_t * load_palettes(char *);
+void display_palette(palette_t *);
 
-	/* window: */
-	bool fixed_win;
-	bool fullscreen;
-	bool hide_bar;
-	char *geometry;
+struct keytagmap_s {
+	char key;
+	char * tag;
+	keytagmap_t * next;
+};
 
-	/* misc flags: */
-	bool quiet;
-	bool thumb_mode;
-	bool tag_mode;
-	bool clean_cache;
-} options_t;
+struct palette_s {
+	int index;
+	char * label;
+	palette_t * next;
+	keytagmap_t * tags;
+};
 
-extern const options_t *options;
+struct mapping2_s {
+	char * key;
+	char * value;
+	mapping2_t * next;
+};
 
-void print_usage(void);
-void print_version(void);
+struct mapping_s {
+	char * key;
+	char * value;
+	mapping_t * next;
+	mapping_t * down;
+};
 
-void parse_options(int, char**);
 
-#endif /* OPTIONS_H */

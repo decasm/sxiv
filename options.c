@@ -57,13 +57,17 @@ void parse_options(int argc, char **argv) {
 
 	_options.quiet = false;
 	_options.thumb_mode = false;
+	_options.tag_mode = false;
 	_options.clean_cache = false;
 
-	while ((opt = getopt(argc, argv, "bcdFfg:hn:pqrstvZz:")) != -1) {
+	while ((opt = getopt(argc, argv, "abcdFfg:hn:pqrstvZz:")) != -1) {
 		switch (opt) {
 			case '?':
 				print_usage();
 				exit(EXIT_FAILURE);
+			case 'a':
+				_options.tag_mode = true;
+				break;
 			case 'b':
 				_options.hide_bar = true;
 				break;

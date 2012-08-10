@@ -13,7 +13,8 @@ typedef enum {
 
 typedef enum {
 	MODE_IMAGE,
-	MODE_THUMB
+	MODE_THUMB,
+	MODE_TAG
 } appmode_t;
 
 typedef enum {

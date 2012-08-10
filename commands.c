@@ -27,12 +27,15 @@
 #include "commands.h"
 #include "image.h"
 #include "thumbs.h"
+#include "palette.h"
+#include "tag.h"
 #include "util.h"
 #include "config.h"
 
 void cleanup(void);
 void remove_file(int, bool);
 void load_image(int);
+void load_palette(int);
 void redraw(void);
 void reset_cursor(void);
 void animate(void);
@@ -445,4 +448,13 @@ bool it_shell_cmd(arg_t a) {
 			tns.sel = tns.cnt - 1;
 	}
 	return true;
+}
+
+bool p_change_palette(arg_t a) {
+
+	if (mode == MODE_TAG) {
+		load_palette(prefix);
+		return true;
+	}
+	return false;
 }

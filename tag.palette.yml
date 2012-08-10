@@ -1,0 +1,21 @@
+---
+1:
+  label: Work
+  p: Programming
+  e: Editors
+  v: Viewers
+2:
+  label: Home
+  w: Windows
+  t: Tile
+  y: Yard
+3:
+  label: Wife
+  g: Gifts
+  p: Presents
+  k: Kisses
+0:
+  label: Hobby
+  g: Go
+  c: Chess
+  h: Horticulture 

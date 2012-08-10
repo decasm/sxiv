@@ -1,5 +1,5 @@
-/* sxiv: options.h
- * Copyright (c) 2012 Bert Muennich <be.muennich at googlemail.com>
+/* sxiv: tag.h
+ * Copyright (c) 2012 Devon Smith <decasm at gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -16,43 +16,20 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef OPTIONS_H
-#define OPTIONS_H
-
-#include "image.h"
-#include "types.h"
+#ifndef TAG_H
+#define TAG_H
 
 typedef struct {
-	/* file list: */
-	char **filenames;
-	bool from_stdin;
-	bool recursive;
-	int filecnt;
-	int startnum;
+	palette_t *palette;
+	win_t *win;
 
-	/* image: */
-	scalemode_t scalemode;
-	float zoom;
-	bool aa;
+	int palette_count;
+	int current_palette;
+} tag_t;
 
-	/* window: */
-	bool fixed_win;
-	bool fullscreen;
-	bool hide_bar;
-	char *geometry;
 
-	/* misc flags: */
-	bool quiet;
-	bool thumb_mode;
-	bool tag_mode;
-	bool clean_cache;
-} options_t;
+void tag_init(tag_t *, palette_t *, win_t *);
+void tag_render(tag_t *);
+void tag_render_palette(tag_t *tag, int palette_index);
 
-extern const options_t *options;
-
-void print_usage(void);
-void print_version(void);
-
-void parse_options(int, char**);
-
-#endif /* OPTIONS_H */
+#endif /* TAG_H */
