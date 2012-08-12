@@ -206,7 +206,8 @@ bool check_timeouts(struct timeval *t) {
 
 void load_palette(int new) {
 	tag.current_palette = new;
-	tag_render_palette(&tag, new);
+	if ( new != tag.current_palette) 
+		tag_render_palette(&tag);
 }
 
 

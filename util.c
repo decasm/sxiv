@@ -344,3 +344,15 @@ int r_mkdir(const char *path) {
 
 	return err;
 }
+
+void hex_to_rgb(long hex, rgb_t * rgb) {
+    rgb->red = ((hex >> 16) & 0xff);
+    rgb->green = ((hex >> 8) & 0xff);
+    rgb->blue = ((hex) & 0xff);
+}
+void hex_to_rgba(long hex, rgba_t * rgba) {
+    rgba->red = ((hex >> 24) & 0xff);
+    rgba->green = ((hex >> 16) & 0xff);
+    rgba->blue = ((hex >> 8) & 0xff);
+    rgba->alpha = ((hex) & 0xff);
+}

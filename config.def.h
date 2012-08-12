@@ -126,6 +126,18 @@ static const keymap_t keys[] = {
 	{ false,  XK_t,             p_change_palette,     (arg_t) None },
 
 	/* open current image with given program: */
+	{ true,   XK_0,             p_change_palette,     (arg_t) 0 },
+	{ true,   XK_1,             p_change_palette,     (arg_t) +1 },
+	{ true,   XK_2,             p_change_palette,     (arg_t) +2 },
+	{ true,   XK_3,             p_change_palette,     (arg_t) +3 },
+	{ true,   XK_4,             p_change_palette,     (arg_t) +4 },
+	{ true,   XK_5,             p_change_palette,     (arg_t) +5 },
+	{ true,   XK_6,             p_change_palette,     (arg_t) +6 },
+	{ true,   XK_7,             p_change_palette,     (arg_t) +7 },
+	{ true,   XK_8,             p_change_palette,     (arg_t) +8 },
+	{ true,   XK_9,             p_change_palette,     (arg_t) +9 },
+
+	/* open current image with given program: */
 	{ true,   XK_g,             it_open_with,         (arg_t) "gimp" },
 
 	/* run shell command line on current file ("$SXIV_IMG"): */

@@ -52,6 +52,13 @@
 }
 
 typedef struct {
+	int red, green, blue;
+} rgb_t;
+typedef struct {
+	int red, green, blue, alpha;
+} rgba_t;
+
+typedef struct {
 	DIR *dir;
 	char *name;
 	int d;
@@ -79,4 +86,6 @@ int r_closedir(r_dir_t*);
 char* r_readdir(r_dir_t*);
 int r_mkdir(const char *);
 
+void hex_to_rgb(long hex, rgb_t * rgb);
+void hex_to_rgba(long hex, rgba_t * rgba);
 #endif /* UTIL_H */

@@ -451,9 +451,10 @@ bool it_shell_cmd(arg_t a) {
 }
 
 bool p_change_palette(arg_t a) {
+	int x = (int) a;
 
 	if (mode == MODE_TAG) {
-		load_palette(prefix);
+		load_palette(x);
 		return true;
 	}
 	return false;
