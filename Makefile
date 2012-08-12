@@ -51,7 +51,7 @@ pp:	$(P_OBJ)
 
 clean:
 	@echo "cleaning"
-	@rm -f $(OBJ) $(T_OBJ) $(V_OBJ) sxit sxiv sxiv-$(VERSION).tar.gz
+	@rm -f $(OBJ) $(P_OBJ) $(T_OBJ) $(V_OBJ) pp sxit sxiv sxiv-$(VERSION).tar.gz
 
 install: all
 	@echo "installing executable file to $(DESTDIR)$(PREFIX)/bin"
