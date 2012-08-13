@@ -322,11 +322,13 @@ void reset_cursor(void) {
 				break;
 			}
 		}
-	} else {
+	} else if (mode == MODE_THUMB ) {
 		if (tns.cnt != filecnt)
 			cursor = CURSOR_WATCH;
 		else
 			cursor = CURSOR_ARROW;
+	} else {
+		cursor = CURSOR_ARROW;
 	}
 	win_set_cursor(&win, cursor);
 }
@@ -361,7 +363,7 @@ void on_keypress(XKeyEvent *kev) {
 
 	XLookupString(kev, &key, 1, &ksym, NULL);
 
-	if ((ksym == XK_Escape || (key >= '0' && key <= '9')) &&
+	if ((ksym == XK_Escape || (key >= '0' && key <= '9')) && mode != MODE_TAG &&
 	    (kev->state & ControlMask) == 0)
 	{
 		/* number prefix for commands */
