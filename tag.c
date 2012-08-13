@@ -239,12 +239,13 @@ void tag_free(palette_t *palette) {
 
 }
 
-void tag_render(tag_t *tag) {
+void tag_render(tag_t *tag, img_t *img) {
 	win_t *win;
-	if (tag == NULL || tag->palette == NULL || tag->win == NULL)
+	if (tag == NULL || tag->palette == NULL || tag->win == NULL || img == NULL)
 		return;
 	win = tag->win;
-	win_clear(win);
+	img_render(img);
+
 	tag_bar_y = win->h - (button_height*2) - 2;
 	imlib_context_set_drawable(win->pm);
 	tag_render_palette(tag);

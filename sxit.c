@@ -301,7 +301,7 @@ void redraw(void) {
 	if (mode == MODE_IMAGE)
 		img_render(&img);
 	else if (mode == MODE_TAG)
-		tag_render(&tag);
+		tag_render(&tag, &img);
 	else
 		tns_render(&tns);
 	update_info();
@@ -590,6 +590,8 @@ int main(int argc, char **argv) {
 		palette = load_palettes("tag.palette.yml");
 		display_palette(palette);
 		tag_init(&tag, palette, &win);
+		tns.thumbs = NULL;
+		load_image(fileidx);
 	} else if (options->thumb_mode) {
 		mode = MODE_THUMB;
 		tns_init(&tns, filecnt, &win);
