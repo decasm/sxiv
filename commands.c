@@ -141,7 +141,7 @@ bool it_remove_image(arg_t a) {
 bool i_navigate(arg_t a) {
 	long n = (long) a;
 
-	if (mode == MODE_IMAGE) {
+	if (mode == MODE_IMAGE || mode == MODE_TAG) {
 		if (prefix > 0)
 			n *= prefix;
 		n += fileidx;
