@@ -16,7 +16,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-
+#ifndef PALETTE_H
+#define PALETTE_H
 
 typedef struct palette_s palette_t;
 typedef struct keytagmap_s keytagmap_t;
@@ -52,4 +53,5 @@ struct mapping_s {
 	mapping_t * down;
 };
 
+#endif
 

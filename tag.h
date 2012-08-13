@@ -19,12 +19,15 @@
 #ifndef TAG_H
 #define TAG_H
 
+#include "palette.h"
+
 #define TAG_LABEL_NORMAL 0x5A5A5AFF
 #define TAG_LABEL_SELECTED 0x000000FF
 #define TAG_MAPPING_NORMAL 0x5A5A5AFF
 #define TAG_MAPPING_SELECTED 0x000000FF
 
 typedef struct {
+	bool tagging_on;
 	palette_t *palette;
 	win_t *win;
 
@@ -33,8 +36,8 @@ typedef struct {
 } tag_t;
 
 
-void tag_init(tag_t *, palette_t *, win_t *);
-void tag_render(tag_t *, img_t *);
+void tag_init(tag_t *, win_t *);
+void tag_render(tag_t *);
 void tag_render_palette(tag_t *);
 void tag_render_palette_mapping(tag_t *tag);
 

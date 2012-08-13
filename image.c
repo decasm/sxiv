@@ -30,6 +30,7 @@
 #include "options.h"
 #include "util.h"
 #include "config.h"
+#include "tag.h"
 
 enum { MIN_GIF_DELAY = 50 };
 
@@ -389,7 +390,7 @@ bool img_fit(img_t *img) {
 	}
 }
 
-void img_render(img_t *img) {
+void img_render(img_t *img, tag_t *tag) {
 	win_t *win;
 	int sx, sy, sw, sh;
 	int dx, dy, dw, dh;
@@ -455,6 +456,9 @@ void img_render(img_t *img) {
 	
 	imlib_context_set_drawable(win->pm);
 	imlib_render_image_part_on_drawable_at_size(sx, sy, sw, sh, dx, dy, dw, dh);
+	if ( tag->tagging_on ) {
+		tag_render(tag);
+	}
 
 	img->dirty = false;
 }

@@ -28,6 +28,7 @@
 
 #include "exif.h"
 #include "thumbs.h"
+#include "tag.h"
 #include "util.h"
 #include "config.h"
 
@@ -307,7 +308,7 @@ void tns_check_view(tns_t *tns, bool scrolled) {
 	}
 }
 
-void tns_render(tns_t *tns) {
+void tns_render(tns_t *tns, tag_t *tag) {
 	thumb_t *t;
 	win_t *win;
 	int i, cnt, r, x, y;
@@ -320,6 +321,9 @@ void tns_render(tns_t *tns) {
 	win = tns->win;
 	win_clear(win);
 	imlib_context_set_drawable(win->pm);
+	if ( tag->tagging_on ) {
+		tag_render(tag);
+	}
 
 	tns->cols = MAX(1, win->w / thumb_dim);
 	tns->rows = MAX(1, win->h / thumb_dim);

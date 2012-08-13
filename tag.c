@@ -86,7 +86,6 @@ void draw_button_left_border(int x, int y, int height) {
 	}
 	imlib_context_set_image(buffer);
 
-	TAG_C_LOG && fprintf(stderr, "Tag left border x(%d) y(%d) h(%d)\n", x, y, height);
 	imlib_context_set_color(0,0,0,255);
 	imlib_image_draw_line (0, 0, 0, height, 0);
 
@@ -104,7 +103,6 @@ void draw_button_bottom_border(int x, int y, int width) {
 	}
 	imlib_context_set_image(buffer);
 
-	TAG_C_LOG && fprintf(stderr, "Tag bottom border x(%d) y(%d) h(%d)\n", x, y, width);
 	imlib_context_set_color(0,0,0,255);
 	imlib_image_draw_line (0, 0, width, 0, 0);
 
@@ -159,7 +157,6 @@ void tag_render_palette_mapping(tag_t *tag) {
 	keytagmap_t * ktm;
 	int button_x = tag_bar_left_offset, button_y = 0;
 	int button_w = 0, button_h = button_height;
-	TAG_C_LOG && fprintf(stderr, "Show Palette %d\n", tag->current_palette);
 
 	win = tag->win;
 	imlib_context_set_drawable(win->pm);
@@ -174,7 +171,6 @@ void tag_render_palette_mapping(tag_t *tag) {
 	set_label_normal();
 	button_y = tag_bar_y + button_height + 1;
 	while ( ktm ) {
-		TAG_C_LOG && fprintf(stderr, "Palette key tag : %c -> %s\n", ktm->key,ktm->tag);
 		render_button(ktm->key, ktm->tag, button_x, button_y, &button_w, &button_h, false);
 		button_x += button_w;
 		ktm = ktm->next;
@@ -194,7 +190,6 @@ void tag_render_palette(tag_t * tag) {
 	button_y = tag_bar_y;
 
 	while ( pal ) {
-		TAG_C_LOG && fprintf(stderr, "Palette label : %s\n", pal->label);
 		if ( tag->current_palette != -1 && tag->current_palette == pal->index) {
 			tag_render_palette_mapping(tag);
 			set_label_highlight();
@@ -209,12 +204,16 @@ void tag_render_palette(tag_t * tag) {
 	}
 }
 
-void tag_init(tag_t *tag, palette_t *palette, win_t *win) {
+void tag_init(tag_t *tag, win_t *win) {
 	palette_t * p_counter;
 	int text_w;
 	char * text = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	palette_t * palette;
+
+	palette = load_palettes("tag.palette.yml");
 
 	tag->win = win;
+	tag->tagging_on = true;
 	tag->palette = palette;
 	tag->palette_count = 1;
 	tag->current_palette = -1;
@@ -224,7 +223,6 @@ void tag_init(tag_t *tag, palette_t *palette, win_t *win) {
 		tag->palette_count++;
 		p_counter = p_counter->next;
 	}
-	TAG_C_LOG && fprintf(stderr, "tag.c: tag count(%d)\n", tag->palette_count);
 
 	set_font();
 	set_label_normal();
@@ -232,22 +230,19 @@ void tag_init(tag_t *tag, palette_t *palette, win_t *win) {
 	/* determine height of text given font size */
 	imlib_get_text_size(text, &text_w, &text_height);
 	button_height = text_height + pad_height;
-	TAG_C_LOG && fprintf(stderr, "text height(%d)\n", text_height);
 }
 
 void tag_free(palette_t *palette) {
 
 }
 
-void tag_render(tag_t *tag, img_t *img) {
+void tag_render(tag_t *tag) {
 	win_t *win;
-	if (tag == NULL || tag->palette == NULL || tag->win == NULL || img == NULL)
+	if (tag == NULL || tag->palette == NULL || tag->win == NULL )
 		return;
 	win = tag->win;
-	img_render(img);
-
 	tag_bar_y = win->h - (button_height*2) - 2;
-	imlib_context_set_drawable(win->pm);
+	/* imlib_context_set_drawable(win->pm); */
 	tag_render_palette(tag);
 }
 

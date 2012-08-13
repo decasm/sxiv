@@ -44,7 +44,7 @@ typedef struct {
 	/* misc flags: */
 	bool quiet;
 	bool thumb_mode;
-	bool tag_mode;
+	bool palettes;
 	bool clean_cache;
 } options_t;
 

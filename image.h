@@ -23,6 +23,8 @@
 
 #include "types.h"
 #include "window.h"
+#include "palette.h"
+#include "tag.h"
 
 typedef struct {
 	Imlib_Image *im;
@@ -63,7 +65,7 @@ void img_init(img_t*, win_t*);
 bool img_load(img_t*, const fileinfo_t*);
 void img_close(img_t*, bool);
 
-void img_render(img_t*);
+void img_render(img_t*, tag_t*);
 
 bool img_fit_win(img_t*, scalemode_t);
 bool img_center(img_t*);

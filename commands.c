@@ -46,6 +46,8 @@ extern appmode_t mode;
 extern img_t img;
 extern tns_t tns;
 extern win_t win;
+extern tag_t tag;
+
 
 extern fileinfo_t *files;
 extern int filecnt, fileidx;
@@ -141,7 +143,7 @@ bool it_remove_image(arg_t a) {
 bool i_navigate(arg_t a) {
 	long n = (long) a;
 
-	if (mode == MODE_IMAGE || mode == MODE_TAG) {
+	if (mode == MODE_IMAGE) {
 		if (prefix > 0)
 			n *= prefix;
 		n += fileidx;
@@ -276,7 +278,7 @@ bool i_drag(arg_t a) {
 			next = XCheckIfEvent(win.env.dpy, &e, is_motionnotify, None);
 		if ((!dragging || !next) && (dx != 0 || dy != 0)) {
 			if (img_move(&img, dx, dy)) {
-				img_render(&img);
+				img_render(&img, &tag);
 				win_draw(&win);
 			}
 			dx = dy = 0;
@@ -450,12 +452,16 @@ bool it_shell_cmd(arg_t a) {
 	return true;
 }
 
-bool p_change_palette(arg_t a) {
-	int x = (int) a;
-
-	if (mode == MODE_TAG) {
-		load_palette(x);
+bool it_tagging_overlay(arg_t a) {
+	if ( tag.tagging_on ) {
+		tag.tagging_on = false;
 		return true;
 	}
-	return false;
+	tag_init(&tag, &win);
+	return true;
+}
+bool p_change_palette(arg_t a) {
+	int x = (long) a;
+	load_palette(x);
+	return true;
 }

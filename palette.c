@@ -26,7 +26,7 @@
 #include "palette.h"
 #include "util.h"
 
-#define SXITLOG 0
+#define PALETTE_C_LOG 0
 #define SUBMAP "*SUBMAP*"
 
 void handle_scalar_node(yaml_document_t *, yaml_node_t *);
@@ -269,22 +269,17 @@ palette_t * parse_palette(yaml_parser_t * parser) {
 				break;
 			case YAML_MAPPING_START_EVENT:
 				if ( palette && ! palette->tags ) {
-					SXITLOG && fprintf(stderr, " start map 1\n");
 					palette->tags = ktm = new_keytagmap();
 				}
 				else {
-					SXITLOG && fprintf(stderr, " start map 2\n");
 				}
 				break;
 			case YAML_MAPPING_END_EVENT:
-				SXITLOG && fprintf(stderr, " end map 1 p idx(%d) label(%s)\n", palette->index, palette->label);
 				ktm = NULL;
 				break;
 			case YAML_SCALAR_EVENT:
 				scalar = (char *)event.data.scalar.value;
-				SXITLOG && fprintf(stderr, " scalar evt 1: %s\n", scalar);
 				if ( ! ktm ) {
-					SXITLOG && fprintf(stderr, " scalar evt 2a: %s\n", scalar);
 					if ( ! palette ) {
 						palette = root_palette = new_palette();
 					}
@@ -294,26 +289,20 @@ palette_t * parse_palette(yaml_parser_t * parser) {
 					}
 
 					if ( strlen(scalar) == 1 && palette->index == -1 ) {
-						SXITLOG && fprintf(stderr, " palette index: %s\n", scalar);
        					sscanf(scalar, "%d", &(palette->index));
 					}
 				}
 				else {
-					SXITLOG && fprintf(stderr, " scalar evt 2b: %s\n", scalar);
 					if ( strcmp(scalar, "label") == 0 ) {
-						SXITLOG && fprintf(stderr, " label key: %s\n", scalar);
 						palette->label = s_strdup(scalar);
 					}
 					else if ( palette && palette->label && strcmp(palette->label, "label") == 0 ) {
-						SXITLOG && fprintf(stderr, " label val: %s\n", scalar);
 						palette->label = s_strdup(scalar);
 					}
 					else if ( ! ktm->key ) {
-						SXITLOG && fprintf(stderr, " !k: %s\n", scalar);
 						sscanf(scalar, "%c", &(ktm->key));
 					}
 					else if ( ! ktm->tag ) {
-						SXITLOG && fprintf(stderr, " k&!v: %s\n", scalar);
 						ktm->tag = s_strdup(scalar);
 						if (strlen(ktm->tag) > longest_tag_length) {
 							longest_tag = ktm->tag;
@@ -321,7 +310,6 @@ palette_t * parse_palette(yaml_parser_t * parser) {
 						}
 					}
 					else { /* The next key for the current ktm */
-						SXITLOG && fprintf(stderr, " !(k|v): %s\n", scalar);
 						ktm->next = new_keytagmap();
 						ktm = ktm->next;
 						sscanf(scalar, "%c", &(ktm->key));
@@ -334,8 +322,6 @@ palette_t * parse_palette(yaml_parser_t * parser) {
 		}
 	} while(event.type != YAML_STREAM_END_EVENT);
 
-	/* display_palette(root_palette); */
-	fprintf(stderr, "Longest tag: (%s) length(%d)\n", longest_tag, longest_tag_length);
 	return root_palette;
 }
 

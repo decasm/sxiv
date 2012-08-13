@@ -24,6 +24,7 @@
 
 #include "types.h"
 #include "window.h"
+#include "tag.h"
 
 typedef struct {
 	const fileinfo_t *file;
@@ -58,7 +59,7 @@ void tns_free(tns_t*);
 
 bool tns_load(tns_t*, int, const fileinfo_t*, bool, bool);
 
-void tns_render(tns_t*);
+void tns_render(tns_t*, tag_t*);
 void tns_highlight(tns_t*, int, bool);
 
 bool tns_move_selection(tns_t*, direction_t, int);

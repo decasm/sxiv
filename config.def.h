@@ -122,10 +122,10 @@ static const keymap_t keys[] = {
 	{ false,  XK_a,             i_toggle_antialias,   (arg_t) None },
 	{ false,  XK_A,             it_toggle_alpha,      (arg_t) None },
 
-	/* switch current pallete mapping */
-	{ false,  XK_t,             p_change_palette,     (arg_t) None },
+	/* turn on tagging overlay */
+	{ false,  XK_t,             it_tagging_overlay,     (arg_t) None },
 
-	/* open current image with given program: */
+	/* select palette: */
 	{ false,  XK_0,             p_change_palette,     (arg_t) 0 },
 	{ false,  XK_1,             p_change_palette,     (arg_t) +1 },
 	{ false,  XK_2,             p_change_palette,     (arg_t) +2 },

@@ -262,9 +262,9 @@ void update_info(void) {
 				snprintf(win_bar_l + fi, sizeof win_bar_l - fi, "%s",
 				         files[tns.sel].base);
 		}
-		win_set_title(&win, "sxiv");
+		snprintf(win_title, sizeof win_title, "sxiv -%s", tag.tagging_on ? "- (tag)" : "");
+		win_set_title(&win, win_title);
 		win_set_bar_info(&win, win_bar_l, NULL);
-	} else if (mode == MODE_TAG) {
 	} else {
 		size_readable(&size, &size_unit);
 		if (img.multi.cnt > 0) {
@@ -292,18 +292,16 @@ void update_info(void) {
 		}
 		win_set_bar_info(&win, win_bar_l, win_bar_r);
 
-		snprintf(win_title, sizeof win_title, "sxiv - %s", files[fileidx].name);
+		snprintf(win_title, sizeof win_title, "sxiv - %s%s", files[fileidx].name, tag.tagging_on ? " - (tag)" : "");
 		win_set_title(&win, win_title);
 	}
 }
 
 void redraw(void) {
 	if (mode == MODE_IMAGE)
-		img_render(&img);
-	else if (mode == MODE_TAG)
-		tag_render(&tag, &img);
+		img_render(&img, &tag);
 	else
-		tns_render(&tns);
+		tns_render(&tns, &tag);
 	update_info();
 	win_draw(&win);
 	reset_timeout(redraw);
@@ -363,8 +361,7 @@ void on_keypress(XKeyEvent *kev) {
 
 	XLookupString(kev, &key, 1, &ksym, NULL);
 
-	if ((ksym == XK_Escape || (key >= '0' && key <= '9')) && mode != MODE_TAG &&
-	    (kev->state & ControlMask) == 0)
+	if ((ksym == XK_Escape || (key >= '0' && key <= '9')) && ! tag.tagging_on && (kev->state & ControlMask) == 0)
 	{
 		/* number prefix for commands */
 		prefix = ksym == XK_Escape ? 0 : prefix * 10 + (int) (key - '0');
@@ -510,9 +507,12 @@ int main(int argc, char **argv) {
 	char *filename;
 	struct stat fstats;
 	r_dir_t dir;
-	palette_t * palette;
 
 	parse_options(argc, argv);
+
+	if (options->palettes) {
+		tag_init(&tag, &win);
+	}
 
 	if (options->clean_cache) {
 		tns_init(&tns, 0, NULL);
@@ -585,14 +585,7 @@ int main(int argc, char **argv) {
 	win_init(&win);
 	img_init(&img, &win);
 
-	if (options->tag_mode) {
-		mode = MODE_TAG;
-		palette = load_palettes("tag.palette.yml");
-		display_palette(palette);
-		tag_init(&tag, palette, &win);
-		tns.thumbs = NULL;
-		load_image(fileidx);
-	} else if (options->thumb_mode) {
+	if (options->thumb_mode) {
 		mode = MODE_THUMB;
 		tns_init(&tns, filecnt, &win);
 		while (!tns_load(&tns, 0, &files[0], false, false))
