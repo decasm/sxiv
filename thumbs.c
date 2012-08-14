@@ -313,6 +313,8 @@ void tns_render(tns_t *tns, tag_t *tag) {
 	win_t *win;
 	int i, cnt, r, x, y;
 
+	if ( tag->tagging_on ) tns->dirty = true;
+
 	if (tns == NULL || tns->thumbs == NULL || tns->win == NULL)
 		return;
 	if (!tns->dirty)
@@ -321,9 +323,8 @@ void tns_render(tns_t *tns, tag_t *tag) {
 	win = tns->win;
 	win_clear(win);
 	imlib_context_set_drawable(win->pm);
-	if ( tag->tagging_on ) {
-		tag_render(tag);
-	}
+
+	if ( tag->tagging_on ) tag_render(tag);
 
 	tns->cols = MAX(1, win->w / thumb_dim);
 	tns->rows = MAX(1, win->h / thumb_dim);
