@@ -208,17 +208,16 @@ void tag_init(tag_t *tag, win_t *win) {
 	palette_t * p_counter;
 	int text_w;
 	char * text = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	palette_t * palette;
 
-	palette = load_palettes("tag.palette.yml");
+	if ( tag->palette == NULL )
+		tag->palette = load_palettes("tag.palette.yml");
 
 	tag->win = win;
 	tag->tagging_on = true;
-	tag->palette = palette;
 	tag->palette_count = 1;
 	tag->current_palette = -1;
 
-	p_counter = palette;
+	p_counter = tag->palette;
 	while (p_counter->next != NULL) {
 		tag->palette_count++;
 		p_counter = p_counter->next;
