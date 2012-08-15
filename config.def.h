@@ -59,6 +59,7 @@ enum { THUMB_SIZE = 60 };
 static const keymap_t keys[] = {
 	/* ctrl   key               function              argument */
 	{ false,  XK_q,             it_quit,              (arg_t) None },
+	{ true,   XK_q,             it_quit,              (arg_t) None },
 	{ false,  XK_Return,        it_switch_mode,       (arg_t) None },
 	{ false,  XK_f,             it_toggle_fullscreen, (arg_t) None },
 	{ false,  XK_b,             it_toggle_bar,        (arg_t) None },
@@ -123,7 +124,7 @@ static const keymap_t keys[] = {
 	{ false,  XK_A,             it_toggle_alpha,      (arg_t) None },
 
 	/* turn on tagging overlay */
-	{ false,  XK_t,             it_tagging_overlay,     (arg_t) None },
+	{ true,   XK_t,             it_tagging_overlay,     (arg_t) None },
 
 	/* select palette: */
 	{ false,  XK_0,             p_change_palette,     (arg_t) 0 },
