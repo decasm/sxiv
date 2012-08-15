@@ -368,6 +368,11 @@ void on_keypress(XKeyEvent *kev) {
 		return;
 	}
 
+	if ( tag.tagging_on && key >= 'a' && key <= 'z') {
+		img_apply_tag(&img, key, &tag);
+		return;
+	}
+
 	for (i = 0; i < ARRLEN(keys); i++) {
 		if (keys[i].ksym == ksym && keymask(&keys[i], kev->state)) {
 			if (keys[i].cmd != NULL && keys[i].cmd(keys[i].arg))

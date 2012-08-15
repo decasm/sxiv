@@ -734,3 +734,29 @@ bool img_frame_animate(img_t *img, bool restart) {
 
 	return true;
 }
+
+void img_apply_tag(img_t * img, char tagchar, tag_t * tag) {
+	palette_t * palette;
+	keytagmap_t * ktm;
+
+	fprintf(stderr, "Tag Char (%c) Image()\n", tagchar);
+
+	palette = tag->palette;
+	while ( palette->index != tag->current_palette ) {
+		palette = palette->next;
+		if ( NULL == palette ) {
+			return;
+		}
+	}
+	fprintf(stderr, "Palette (%d) (%s)\n", palette->index, palette->label);
+
+	ktm = palette->tags;
+	while ( ktm->key != tagchar ) {
+		ktm = ktm->next;
+		if ( NULL == ktm ) {
+			return;
+		}
+	}
+
+	fprintf(stderr, "Selected %c = %s\n", tagchar, ktm->tag);
+}
