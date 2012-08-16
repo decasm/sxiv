@@ -51,6 +51,7 @@ extern tag_t tag;
 
 extern fileinfo_t *files;
 extern int filecnt, fileidx;
+extern int alternate;
 
 extern int prefix;
 
@@ -158,6 +159,15 @@ bool i_navigate(arg_t a) {
 		}
 	}
 	return false;
+}
+
+bool i_alternate(arg_t a) {
+	if (mode == MODE_IMAGE) {
+		load_image(alternate);
+		return true;
+	} else {
+		return false;
+	}
 }
 
 bool it_first(arg_t a) {
