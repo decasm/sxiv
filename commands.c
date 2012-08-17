@@ -467,8 +467,10 @@ bool it_toggle_tagging_overlay(arg_t a) {
 		img.dirty = true;
 	else
 		tns.dirty = true;
+
 	if ( tag.tagging_on ) {
 		tag.tagging_on = false;
+		tag_free(&tag);
 		return true;
 	}
 	tag_init(&tag, &win);

@@ -40,5 +40,6 @@ void tag_init(tag_t *, win_t *);
 void tag_render(tag_t *);
 void tag_render_palette(tag_t *);
 void tag_render_palette_mapping(tag_t *tag);
+void tag_free(tag_t *tag);
 
 #endif /* TAG_H */

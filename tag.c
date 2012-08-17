@@ -231,8 +231,13 @@ void tag_init(tag_t *tag, win_t *win) {
 	button_height = text_height + pad_height;
 }
 
-void tag_free(palette_t *palette) {
-
+void tag_free(tag_t *tag) {
+	tag->win = NULL;
+	tag->tagging_on = false;
+	tag->palette_count = 0;
+	tag->current_palette = -1;
+	free(tag->palette); /* tagging can be turned off, palettes changed on disk, then reloaded */
+	tag->palette = NULL;
 }
 
 void tag_render(tag_t *tag) {
