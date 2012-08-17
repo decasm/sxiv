@@ -36,6 +36,8 @@
 #include "types.h"
 #include "util.h"
 #include "window.h"
+#include "palette.h"
+#include "tag.h"
 #include "config.h"
 
 enum {
@@ -58,6 +60,7 @@ void clear_resize(void);
 appmode_t mode;
 img_t img;
 tns_t tns;
+tag_t tag;
 win_t win;
 
 fileinfo_t *files;
@@ -202,6 +205,13 @@ bool check_timeouts(struct timeval *t) {
 	return tmin > 0;
 }
 
+void load_palette(int new) {
+	tag.current_palette = new;
+	if ( new != tag.current_palette) 
+		tag_render_palette(&tag);
+}
+
+
 void load_image(int new) {
 	struct stat fstats;
 
@@ -254,7 +264,8 @@ void update_info(void) {
 				snprintf(win_bar_l + fi, sizeof win_bar_l - fi, "%s",
 				         files[tns.sel].base);
 		}
-		win_set_title(&win, "sxiv");
+		snprintf(win_title, sizeof win_title, "sxiv -%s", tag.tagging_on ? "- (tag)" : "");
+		win_set_title(&win, win_title);
 		win_set_bar_info(&win, win_bar_l, NULL);
 	} else {
 		size_readable(&size, &size_unit);
@@ -283,16 +294,16 @@ void update_info(void) {
 		}
 		win_set_bar_info(&win, win_bar_l, win_bar_r);
 
-		snprintf(win_title, sizeof win_title, "sxiv - %s", files[fileidx].name);
+		snprintf(win_title, sizeof win_title, "sxiv - %s%s", files[fileidx].name, tag.tagging_on ? " - (tag)" : "");
 		win_set_title(&win, win_title);
 	}
 }
 
 void redraw(void) {
 	if (mode == MODE_IMAGE)
-		img_render(&img);
+		img_render(&img, &tag);
 	else
-		tns_render(&tns);
+		tns_render(&tns, &tag);
 	update_info();
 	win_draw(&win);
 	reset_timeout(redraw);
@@ -316,7 +327,7 @@ void reset_cursor(void) {
 			cursor = CURSOR_WATCH;
 		else
 			cursor = CURSOR_ARROW;
-	}
+	} 
 	win_set_cursor(&win, cursor);
 }
 
@@ -350,11 +361,15 @@ void on_keypress(XKeyEvent *kev) {
 
 	XLookupString(kev, &key, 1, &ksym, NULL);
 
-	if ((ksym == XK_Escape || (key >= '0' && key <= '9')) &&
-	    (kev->state & ControlMask) == 0)
+	if ((ksym == XK_Escape || (key >= '0' && key <= '9')) && ! tag.tagging_on && (kev->state & ControlMask) == 0)
 	{
 		/* number prefix for commands */
 		prefix = ksym == XK_Escape ? 0 : prefix * 10 + (int) (key - '0');
+		return;
+	}
+
+	if ( tag.tagging_on && key >= 'a' && key <= 'z') {
+		img_apply_tag(&img, key, &tag);
 		return;
 	}
 
@@ -424,9 +439,7 @@ void run(void) {
 	redraw();
 
 	while (true) {
-		while (mode == MODE_THUMB && tns.cnt < filecnt &&
-		       XPending(win.env.dpy) == 0)
-		{
+		while (mode == MODE_THUMB && tns.cnt < filecnt && XPending(win.env.dpy) == 0) {
 			/* load thumbnails */
 			set_timeout(redraw, TO_REDRAW_THUMBS, false);
 			if (tns_load(&tns, tns.cnt, &files[tns.cnt], false, false)) {
@@ -501,6 +514,10 @@ int main(int argc, char **argv) {
 	r_dir_t dir;
 
 	parse_options(argc, argv);
+
+	if (options->palettes) {
+		tag_init(&tag, &win);
+	}
 
 	if (options->clean_cache) {
 		tns_init(&tns, 0, NULL);
