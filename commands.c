@@ -462,7 +462,11 @@ bool it_shell_cmd(arg_t a) {
 	return true;
 }
 
-bool it_tagging_overlay(arg_t a) {
+bool it_toggle_tagging_overlay(arg_t a) {
+	if (mode == MODE_IMAGE)
+		img.dirty = true;
+	else
+		tns.dirty = true;
 	if ( tag.tagging_on ) {
 		tag.tagging_on = false;
 		return true;
@@ -473,5 +477,9 @@ bool it_tagging_overlay(arg_t a) {
 bool p_change_palette(arg_t a) {
 	int x = (long) a;
 	load_palette(x);
+	if (mode == MODE_IMAGE)
+		img.dirty = true;
+	else
+		tns.dirty = true;
 	return true;
 }

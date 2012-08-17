@@ -313,8 +313,6 @@ void tns_render(tns_t *tns, tag_t *tag) {
 	win_t *win;
 	int i, cnt, r, x, y;
 
-	if ( tag->tagging_on ) tns->dirty = true;
-
 	if (tns == NULL || tns->thumbs == NULL || tns->win == NULL)
 		return;
 	if (!tns->dirty)

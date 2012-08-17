@@ -72,7 +72,7 @@ bool it_toggle_alpha(arg_t);
 bool it_open_with(arg_t);
 bool it_shell_cmd(arg_t);
 
-bool it_tagging_overlay(arg_t a);
+bool it_toggle_tagging_overlay(arg_t a);
 bool p_change_palette(arg_t a);
 
 #endif /* COMMANDS_H */

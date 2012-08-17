@@ -125,7 +125,7 @@ static const keymap_t keys[] = {
 	{ false,  XK_A,             it_toggle_alpha,      (arg_t) None },
 
 	/* turn on tagging overlay */
-	{ true,   XK_t,             it_tagging_overlay,     (arg_t) None },
+	{ true,   XK_t,             it_toggle_tagging_overlay,     (arg_t) None },
 
 	/* select palette: */
 	{ false,  XK_0,             p_change_palette,     (arg_t) 0 },
